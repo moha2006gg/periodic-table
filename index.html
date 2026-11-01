@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0c">
+<title>الجدول الدوري — أمين</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Reem+Kufi:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0a0c;--surface:#17181d;--ink:#f3f4f7;--ink-2:#9aa0ae;--line:#2b2d36;--focus:#7aa2ff;--tile-ink:#12141c;color-scheme:dark;
+  --nonmetal:#4cc9b0;--alkali:#ff6b57;--alkaline:#ffc233;--metalloid:#a3d65c;--postmetal:#ff8fc7;--halogen:#5aa9ff;--noble:#b794ff;
+  --ar:"IBM Plex Sans Arabic","Segoe UI",Tahoma,Arial,sans-serif;
+  --kufi:"Reem Kufi","IBM Plex Sans Arabic",Tahoma,sans-serif;
+  --lat:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html.lock{overflow:hidden}
+body{margin:0;min-height:100vh;background:var(--bg);color:var(--ink);font-family:var(--ar);-webkit-font-smoothing:antialiased}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+button{font:inherit;color:inherit}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+.nonmetal{--c:var(--nonmetal)}.alkali{--c:var(--alkali)}.alkaline{--c:var(--alkaline)}.metalloid{--c:var(--metalloid)}
+.postmetal{--c:var(--postmetal)}.halogen{--c:var(--halogen)}.noble{--c:var(--noble)}
+
+main{width:min(100%,1080px);margin:0 auto;padding:clamp(24px,5vw,60px) clamp(14px,4vw,40px) 36px}
+
+/* header */
+.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:20px 48px;margin-bottom:clamp(24px,4vw,40px)}
+h1{margin:0 0 14px;font:700 clamp(46px,9vw,96px)/1 var(--kufi)}
+.lede{margin:0;max-width:44ch;color:var(--ink-2);font-size:clamp(14px,2vw,16.5px);line-height:1.8}
+.slot-top{flex:1 1 300px;max-width:430px}
+.slot-top:empty{display:none}
+
+/* search */
+.field{position:relative}
+.field .mag{position:absolute;inset-inline-start:15px;top:50%;translate:0 -50%;width:19px;height:19px;color:var(--ink-2);pointer-events:none}
+.field input{width:100%;height:50px;padding-inline:45px;border:1.5px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);font:500 16px var(--ar);outline:none;transition:border-color .15s}
+.field input::placeholder{color:#6f7585}
+.field input:hover{border-color:#4a4d5a}
+.field input:focus{border-color:var(--ink)}
+.field input::-webkit-search-cancel-button{display:none}
+.clear{position:absolute;inset-inline-end:8px;top:50%;translate:0 -50%;width:34px;height:34px;border:0;border-radius:50%;background:transparent;color:var(--ink-2);cursor:pointer;display:none;place-items:center}
+.clear:hover{background:var(--bg);color:var(--ink)}
+.has-value .clear{display:grid}
+.status{margin:7px 4px 0;min-height:1.5em;font-size:13.5px;color:var(--ink-2)}
+
+/* table */
+.board{overflow-x:auto;margin:0 calc(-1 * clamp(14px,4vw,40px));padding:6px clamp(14px,4vw,40px) 14px}
+.table{direction:ltr;display:grid;
+  grid-template-columns:20px repeat(2,minmax(0,1fr)) 14px repeat(6,minmax(0,1fr));
+  gap:clamp(4px,.8vw,8px);min-width:560px}
+.gh,.pl{font:600 13px var(--lat);color:var(--ink-2);display:grid;place-items:center}
+.gh{grid-row:1;padding-bottom:4px}
+.pl{grid-column:1}
+.sep{grid-column:4;grid-row:3/5;position:relative;display:grid;place-items:center}
+.sep:before{content:"";position:absolute;top:4px;bottom:4px;left:50%;border-left:2px dotted var(--line)}
+.sep span{position:relative;background:var(--bg);padding:8px 0;writing-mode:vertical-rl;font:500 11px var(--ar);color:var(--ink-2);white-space:nowrap}
+.gap-cell{grid-row:2;grid-column:3/10;align-self:center;direction:rtl;padding-inline:clamp(4px,1.5vw,16px)}
+.gap-cell:empty{display:none}
+
+.el{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
+  min-width:0;aspect-ratio:1/1.1;padding:18px 2px 8px;border:0;border-radius:10px;background:var(--c);color:var(--tile-ink);
+  font-family:var(--ar);cursor:pointer;transition:transform .15s,opacity .2s}
+.el .n{position:absolute;top:7px;left:9px;font:600 clamp(10px,1.1vw,12px) var(--lat);opacity:.7}
+.el .s{font:800 clamp(24px,4.4vw,46px)/1 var(--lat);letter-spacing:-.02em}
+.el .nm{max-width:100%;padding-inline:3px;margin-top:5px;font-weight:600;font-size:clamp(10px,1.25vw,13.5px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.el .m{margin-top:2px;font:500 clamp(9px,1vw,11.5px) var(--lat);opacity:.62}
+.el:hover{transform:translateY(-4px)}
+.el.dim{opacity:.2}
+.table[data-fam] .el{opacity:.25}
+.table[data-fam=nonmetal] .nonmetal,.table[data-fam=alkali] .alkali,.table[data-fam=alkaline] .alkaline,
+.table[data-fam=metalloid] .metalloid,.table[data-fam=postmetal] .postmetal,.table[data-fam=halogen] .halogen,
+.table[data-fam=noble] .noble{opacity:1}
+
+.swipe{display:none;margin:2px 0 0;font-size:13px;color:var(--ink-2)}
+
+/* legend */
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin:28px 0 0;padding:0;list-style:none}
+.chip{display:inline-flex;align-items:center;gap:9px;padding:8px 14px;border:1.5px solid var(--line);border-radius:999px;background:var(--surface);font:600 14px var(--ar);cursor:pointer;transition:background .15s,border-color .15s}
+.chip i{width:14px;height:14px;border-radius:50%;background:var(--c)}
+.chip b{font:600 12.5px var(--lat);color:var(--ink-2)}
+.chip:hover{border-color:var(--ink)}
+.chip[aria-pressed=true]{background:var(--c);border-color:var(--c);color:var(--tile-ink)}
+.chip[aria-pressed=true] b{color:var(--tile-ink)}
+.chip[aria-pressed=true] i{background:var(--tile-ink)}
+
+footer{margin-top:44px;font-size:13.5px;color:var(--ink-2);line-height:1.8}
+footer strong{color:var(--ink)}
+
+/* detail dialog */
+dialog{border:0;padding:0;border-radius:24px;width:min(600px,calc(100% - 24px));max-width:none;max-height:calc(100dvh - 24px);
+  background:var(--surface);color:var(--ink);overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 0 1px var(--line)}
+dialog::backdrop{background:rgba(0,0,0,.72)}
+dialog[open]{animation:rise .24s cubic-bezier(.2,.8,.2,1)}
+@keyframes rise{from{opacity:0;transform:translateY(24px)}}
+.sheet{max-height:calc(100dvh - 24px);overflow-y:auto}
+.sh-head{background:var(--c);color:var(--tile-ink);padding:14px 22px 22px}
+.sh-bar{display:flex;align-items:center;justify-content:space-between;min-height:40px}
+.sh-num{font-size:14px;font-weight:600}
+.x{width:40px;height:40px;border:0;border-radius:50%;background:rgba(255,255,255,.5);color:var(--tile-ink);display:grid;place-items:center;cursor:pointer}
+.x:hover{background:#fff}
+.sh-main{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-top:10px}
+.sh-name{margin:0;font:700 clamp(34px,8vw,48px)/1.1 var(--kufi)}
+.sh-cat{margin:8px 0 0;font-size:15px;font-weight:600}
+.sh-en{margin:2px 0 0;font:500 15px var(--lat);color:rgba(18,20,28,.7);direction:ltr;text-align:right}
+.sh-sym{font:800 clamp(76px,19vw,116px)/.8 var(--lat);letter-spacing:-.04em;direction:ltr}
+.sh-body{display:grid;grid-template-columns:minmax(0,210px) minmax(0,1fr);gap:22px;align-items:center;padding:22px 22px 6px}
+.bohr{margin:0}
+.bohr svg{display:block;width:100%;height:auto;aspect-ratio:1}
+.orb{fill:none;stroke:var(--ink);stroke-opacity:.3;stroke-width:1.5;stroke-dasharray:2 5;stroke-linecap:round}
+.e{fill:var(--ink)}
+.nuc{fill:var(--c)}
+.nt{font:800 13px var(--lat);fill:var(--tile-ink)}
+.spin{transform-origin:100px 100px;animation:spin 22s linear infinite}
+.spin.s1{animation-duration:34s;animation-direction:reverse}
+.spin.s2{animation-duration:50s}
+@keyframes spin{to{transform:rotate(360deg)}}
+.facts{margin:0}
+.facts div{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}
+.facts div:last-child{border-bottom:0}
+.facts dt{font-size:14px;color:var(--ink-2)}
+.facts dd{margin:0;font:600 16px var(--ar);text-align:start}
+.l{direction:ltr;unicode-bidi:isolate;display:inline-block;font-family:var(--lat);font-weight:600}
+.trio{display:grid;grid-template-columns:repeat(3,1fr);margin:16px 22px 0}
+.trio div{padding:6px 0 6px 12px;text-align:center}
+.trio div+div{border-inline-start:1px solid var(--line)}
+.trio b{display:block;font:800 clamp(30px,7vw,40px)/1.1 var(--lat)}
+.trio span{font-size:13.5px;color:var(--ink-2)}
+.note{margin:8px 22px 0;font-size:12.5px;color:var(--ink-2)}
+.fact{margin:18px 22px 0;padding:4px 16px 4px 0;border-inline-start:5px solid var(--c);padding-inline-start:14px;font-size:15.5px;line-height:1.8}
+.pager{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:20px 22px 22px}
+.pg{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border:1.5px solid var(--line);border-radius:999px;background:var(--surface);font:600 14px var(--ar);cursor:pointer}
+.pg:hover:not(:disabled){border-color:var(--ink)}
+.pg:disabled{opacity:.35;cursor:default}
+.pos{font:600 13px var(--lat);color:var(--ink-2);direction:ltr}
+
+@media(max-width:699px){
+  .swipe{display:block}
+}
+@media(max-width:600px){
+  dialog{margin:auto 0 0;width:100%;border-radius:24px 24px 0 0;max-height:92dvh}
+  .sheet{max-height:92dvh}
+}
+@media(max-width:520px){
+  .sh-body{grid-template-columns:1fr}
+  .bohr{max-width:210px;margin-inline:auto}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+<main>
+  <header class="top">
+    <div>
+      <h1>الجدول الدوري</h1>
+      <p class="lede">أول ثمانية عشر عنصراً، مرتّبة كما في الجدول الحقيقي. مرّر المؤشر على عنصر لترى عائلته، واضغط عليه لترى ذرّته.</p>
+    </div>
+    <div class="slot-top" id="slotTop">
+      <div class="search" id="searchWrap">
+        <label class="sr" for="search">ابحث عن عنصر</label>
+        <div class="field" id="field">
+          <svg class="mag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input id="search" type="search" placeholder="ابحث بالاسم أو الرمز أو الرقم" autocomplete="off" spellcheck="false" enterkeyhint="search">
+          <button class="clear" id="clear" type="button" aria-label="مسح البحث"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+        </div>
+        <p class="status" id="status" aria-live="polite"></p>
+      </div>
+    </div>
+  </header>
+
+  <div class="board"><div class="table" id="table" role="group" aria-label="الجدول الدوري للعناصر من 1 إلى 18"></div></div>
+  <p class="swipe">اسحب الجدول جانبياً لرؤية بقية الأعمدة.</p>
+
+  <ul class="legend" id="legend"></ul>
+
+  <footer>تصميم وبرمجة <strong>أمين</strong><br>الكتل الذرية قيم قياسية مقرّبة.</footer>
+</main>
+
+<dialog id="dlg" aria-labelledby="dName">
+  <div class="sheet" id="sheet">
+    <div class="sh-head">
+      <div class="sh-bar">
+        <span class="sh-num" id="dNum"></span>
+        <button class="x" id="dClose" type="button" aria-label="إغلاق"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      </div>
+      <div class="sh-main">
+        <div>
+          <h2 class="sh-name" id="dName"></h2>
+          <p class="sh-cat" id="dCat"></p>
+          <p class="sh-en" id="dEn"></p>
+        </div>
+        <div class="sh-sym" id="dSym" aria-hidden="true"></div>
+      </div>
+    </div>
+    <div class="sh-body">
+      <figure class="bohr"><svg id="dBohr" viewBox="0 0 200 200" role="img" aria-label="نموذج بور للذرة"></svg></figure>
+      <dl class="facts" id="dFacts"></dl>
+    </div>
+    <div class="trio">
+      <div><b id="tP"></b><span>بروتونات</span></div>
+      <div><b id="tE"></b><span>إلكترونات</span></div>
+      <div><b id="tN"></b><span>نيوترونات تقريباً</span></div>
+    </div>
+    <p class="note">النيوترونات = الكتلة الذرية المقرّبة − العدد الذري.</p>
+    <p class="fact" id="dFact"></p>
+    <div class="pager">
+      <button class="pg" id="dPrev" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>السابق</button>
+      <span class="pos" id="dPos"></span>
+      <button class="pg" id="dNext" type="button">التالي<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 6-6 6 6 6"/></svg></button>
+    </div>
+  </div>
+</dialog>
+
+<script>
+const CATS=[["nonmetal","لافلز"],["alkali","فلز قلوي"],["alkaline","فلز قلوي ترابي"],["metalloid","شبه فلز"],["postmetal","فلز بعد انتقالي"],["halogen","هالوجين"],["noble","غاز نبيل"]];
+const CAT=Object.fromEntries(CATS);
+const GAS="غاز",SOL="صلب";
+// [العدد, الرمز, الاسم, English, الكتلة, العائلة, الدورة, المجموعة, الحالة, معلومة]
+const RAW=[
+[1,"H","الهيدروجين","Hydrogen","1.008","nonmetal",1,1,GAS,"أخف العناصر وأكثرها وفرة في الكون، ويدخل في تركيب الماء."],
+[2,"He","الهيليوم","Helium","4.0026","noble",1,18,GAS,"غاز خامل لا يشتعل ولا يتفاعل، ولهذا يُستعمل لملء البالونات."],
+[3,"Li","الليثيوم","Lithium","6.94","alkali",2,1,SOL,"أخف الفلزات، ويدخل في بطاريات الهواتف والسيارات الكهربائية."],
+[4,"Be","البيريليوم","Beryllium","9.0122","alkaline",2,2,SOL,"فلز خفيف وشديد الصلابة، يُستعمل في سبائك الأجهزة الدقيقة والفضاء."],
+[5,"B","البورون","Boron","10.81","metalloid",2,13,SOL,"يدخل في صناعة الزجاج المقاوم للحرارة ومنظفات الغسيل."],
+[6,"C","الكربون","Carbon","12.011","nonmetal",2,14,SOL,"أساس الكيمياء العضوية وكل الكائنات الحية، ويوجد في الألماس والفحم."],
+[7,"N","النيتروجين","Nitrogen","14.007","nonmetal",2,15,GAS,"يشكّل نحو 78% من هواء الغلاف الجوي."],
+[8,"O","الأكسجين","Oxygen","15.999","nonmetal",2,16,GAS,"يشكّل نحو 21% من الهواء، ولا يستطيع الإنسان التنفس بدونه."],
+[9,"F","الفلور","Fluorine","18.998","halogen",2,17,GAS,"أنشط العناصر كيميائياً، ويُضاف إلى معجون الأسنان على شكل فلوريد."],
+[10,"Ne","النيون","Neon","20.180","noble",2,18,GAS,"يتوهج بلون أحمر برتقالي داخل أنابيب لافتات النيون."],
+[11,"Na","الصوديوم","Sodium","22.990","alkali",3,1,SOL,"فلز طري يتفاعل بعنف مع الماء، ومع الكلور يكوّن ملح الطعام."],
+[12,"Mg","المغنيسيوم","Magnesium","24.305","alkaline",3,2,SOL,"يحترق بضوء أبيض ساطع، ويوجد في صبغة الكلوروفيل في النبات."],
+[13,"Al","الألومنيوم","Aluminium","26.982","postmetal",3,13,SOL,"فلز خفيف يقاوم التآكل، وتُصنع منه علب المشروبات وهياكل الطائرات."],
+[14,"Si","السيليكون","Silicon","28.085","metalloid",3,14,SOL,"أساس الرقائق الإلكترونية، ويوجد بكثرة في الرمل والزجاج."],
+[15,"P","الفوسفور","Phosphorus","30.974","nonmetal",3,15,SOL,"ضروري للحمض النووي وللعظام، ويدخل في الأسمدة وعيدان الثقاب."],
+[16,"S","الكبريت","Sulfur","32.06","nonmetal",3,16,SOL,"مادة صفراء توجد قرب البراكين، ويُستعمل في حمض الكبريتيك والأسمدة."],
+[17,"Cl","الكلور","Chlorine","35.45","halogen",3,17,GAS,"غاز أخضر مصفر سام، ويُستعمل في تعقيم مياه الشرب والمسابح."],
+[18,"Ar","الأرجون","Argon","39.948","noble",3,18,GAS,"ثالث أكثر غازات الهواء وفرة بنحو 0.9%، وهو خامل لا يتفاعل."]
+];
+const ALT={13:["aluminum"],16:["sulphur"]};
+const AD="٠١٢٣٤٥٦٧٨٩";
+const norm=s=>s.toLowerCase().replace(/[٠-٩]/g,d=>AD.indexOf(d)).replace(/[\u064B-\u065F\u0670\u0640]/g,"").replace(/[أإآٱ]/g,"ا").replace(/ى/g,"ي").replace(/ة/g,"ه").trim();
+const ELS=RAW.map(([n,sym,ar,en,mass,cat,period,group,state,fact])=>({n,sym,ar,en,mass,cat,period,group,state,fact,arN:norm(ar),alt:ALT[n]||[]}));
+
+const $=s=>document.querySelector(s);
+const table=$("#table"),dlg=$("#dlg"),sheet=$("#sheet"),search=$("#search"),status=$("#status");
+const COL={1:2,2:3,13:5,14:6,15:7,16:8,17:9,18:10};
+const tiles=[];
+let q="",activeCat=null,cur=0,hits=[];
+
+function setFam(c){c?table.dataset.fam=c:delete table.dataset.fam}
+
+function build(){
+  const f=document.createDocumentFragment();
+  Object.keys(COL).forEach(g=>{const d=document.createElement("div");d.className="gh";d.textContent=g;d.style.gridColumn=COL[g];d.setAttribute("aria-hidden","true");f.append(d)});
+  [1,2,3].forEach(p=>{const d=document.createElement("div");d.className="pl";d.textContent=p;d.style.gridRow=p+1;d.setAttribute("aria-hidden","true");f.append(d)});
+  const sep=document.createElement("div");sep.className="sep";sep.setAttribute("aria-hidden","true");sep.innerHTML="<span>المجموعات 3–12: الفلزات الانتقالية</span>";f.append(sep);
+  const gap=document.createElement("div");gap.className="gap-cell";gap.id="gapCell";f.append(gap);
+  ELS.forEach((e,i)=>{
+    const b=document.createElement("button");
+    b.type="button";b.className="el "+e.cat;b.style.gridRow=e.period+1;b.style.gridColumn=COL[e.group];
+    b.innerHTML=`<span class="n">${e.n}</span><span class="s">${e.sym}</span><span class="nm">${e.ar}</span><span class="m">${e.mass}</span>`;
+    b.setAttribute("aria-label",`${e.ar}، العدد الذري ${e.n}، ${CAT[e.cat]}`);
+    b.addEventListener("click",()=>openEl(i));
+    b.addEventListener("pointerenter",ev=>{if(ev.pointerType==="mouse")setFam(e.cat)});
+    b.addEventListener("pointerleave",()=>setFam(null));
+    b.addEventListener("focus",()=>{if(b.matches(":focus-visible"))setFam(e.cat)});
+    b.addEventListener("blur",()=>setFam(null));
+    f.append(b);tiles.push({el:b,e});
+  });
+  table.append(f);
+}
+
+function buildLegend(){
+  const ul=$("#legend");
+  CATS.forEach(([k,ar])=>{
+    const li=document.createElement("li"),b=document.createElement("button");
+    b.type="button";b.className="chip "+k;b.setAttribute("aria-pressed","false");
+    b.innerHTML=`<i></i><span>${ar}</span><b>${ELS.filter(e=>e.cat===k).length}</b>`;
+    b.addEventListener("click",()=>{
+      activeCat=activeCat===k?null:k;
+      ul.querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed",String(c===b&&activeCat===k)));
+      apply();
+    });
+    b.addEventListener("pointerenter",ev=>{if(ev.pointerType==="mouse")setFam(k)});
+    b.addEventListener("pointerleave",()=>setFam(null));
+    li.append(b);ul.append(li);
+  });
+}
+
+function matches(e,t){
+  if(!t)return true;
+  return String(e.n)===t||e.sym.toLowerCase().startsWith(t)||e.en.toLowerCase().startsWith(t)||e.alt.some(a=>a.startsWith(t))||e.arN.includes(t);
+}
+function countText(c){return c===0?"لا توجد نتائج":c===1?"نتيجة واحدة":c===2?"نتيجتان":c<=10?c+" نتائج":c+" نتيجة"}
+function apply(){
+  hits=[];
+  tiles.forEach(({el,e},i)=>{
+    const ok=matches(e,q)&&(!activeCat||e.cat===activeCat);
+    el.classList.toggle("dim",!ok);
+    if(ok)hits.push(i);
+  });
+  status.textContent=(q||activeCat)?countText(hits.length):"";
+}
+
+/* atom */
+function shells(n){const out=[];let r=n;for(const c of [2,8,8]){if(r<=0)break;const t=Math.min(c,r);out.push(t);r-=t}return out}
+function config(n){return shells(n).map((c,i)=>`${"KLM"[i]}<sup>${c}</sup>`).join(" ")}
+function bohr(n,sh){
+  const R=[30,53,76];let g="";
+  sh.forEach((cnt,i)=>{
+    let dots="";
+    for(let k=0;k<cnt;k++){
+      const a=(k/cnt)*Math.PI*2+i*.7-Math.PI/2;
+      dots+=`<circle class="e" cx="${(100+R[i]*Math.cos(a)).toFixed(2)}" cy="${(100+R[i]*Math.sin(a)).toFixed(2)}" r="5"/>`;
+    }
+    g+=`<circle class="orb" cx="100" cy="100" r="${R[i]}"/><g class="spin s${i}">${dots}</g>`;
+  });
+  g+=`<circle class="nuc" cx="100" cy="100" r="19"/><text class="nt" x="100" y="105" text-anchor="middle">${n}+</text>`;
+  $("#dBohr").innerHTML=g;
+}
+
+function openEl(i){
+  cur=i;const e=ELS[i],sh=shells(e.n),rounded=Math.round(Number(e.mass));
+  sheet.className="sheet "+e.cat;
+  $("#dNum").textContent="العنصر رقم "+e.n;
+  $("#dName").textContent=e.ar;
+  $("#dCat").textContent=CAT[e.cat];
+  $("#dEn").textContent=e.en;
+  $("#dSym").textContent=e.sym;
+  bohr(e.n,sh);
+  const rows=[
+    ["الكتلة الذرية",`<span class="l">${e.mass}</span>`],
+    ["الحالة عند 25°م",e.state],
+    ["الدورة",`<span class="l">${e.period}</span>`],
+    ["المجموعة",`<span class="l">${e.group}</span>`],
+    ["إلكترونات التكافؤ",`<span class="l">${sh[sh.length-1]}</span>`],
+    ["التوزيع الإلكتروني",`<span class="l">${config(e.n)}</span>`]
+  ];
+  $("#dFacts").innerHTML=rows.map(([k,v])=>`<div><dt>${k}</dt><dd>${v}</dd></div>`).join("");
+  $("#tP").textContent=e.n;$("#tE").textContent=e.n;$("#tN").textContent=rounded-e.n;
+  $("#dFact").textContent=e.fact;
+  $("#dPos").textContent=`${e.n} / ${ELS.length}`;
+  $("#dPrev").disabled=i===0;$("#dNext").disabled=i===ELS.length-1;
+  sheet.scrollTop=0;
+  if(!dlg.open){dlg.showModal();document.documentElement.classList.add("lock")}
+}
+
+/* events */
+$("#dClose").addEventListener("click",()=>dlg.close());
+$("#dPrev").addEventListener("click",()=>cur>0&&openEl(cur-1));
+$("#dNext").addEventListener("click",()=>cur<ELS.length-1&&openEl(cur+1));
+dlg.addEventListener("click",e=>{if(e.target===dlg)dlg.close()});
+dlg.addEventListener("close",()=>document.documentElement.classList.remove("lock"));
+dlg.addEventListener("keydown",e=>{
+  if(e.key==="ArrowLeft"&&cur<ELS.length-1){e.preventDefault();openEl(cur+1)}
+  if(e.key==="ArrowRight"&&cur>0){e.preventDefault();openEl(cur-1)}
+});
+
+const field=$("#field");
+search.addEventListener("input",()=>{q=norm(search.value);field.classList.toggle("has-value",!!search.value);apply()});
+search.addEventListener("keydown",e=>{
+  if(e.key==="Enter"&&hits.length===1)openEl(hits[0]);
+  if(e.key==="Escape"&&search.value){e.preventDefault();$("#clear").click()}
+});
+$("#clear").addEventListener("click",()=>{search.value="";q="";field.classList.remove("has-value");apply();search.focus()});
+
+/* search sits in the empty space of period 1 on wide screens, above the table on narrow ones */
+const mq=matchMedia("(min-width:700px)");
+function place(){(mq.matches?$("#gapCell"):$("#slotTop")).prepend($("#searchWrap"))}
+mq.addEventListener("change",place);
+
+build();buildLegend();place();apply();
+</script>
+</body>
+</html>
